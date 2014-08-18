@@ -359,7 +359,7 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>NRF51 BOARD_PCA10001</Define>
+              <Define>NRF51 BOARD_PCA10001, __CC_ARM</Define>
               <Undefine></Undefine>
               <IncludePath>..\Libraries;..\Libraries\inc;..\Libraries\src;..\Program;..\Program\Drives</IncludePath>
             </VariousControls>

@@ -1,7 +1,5 @@
 /*====================================================================================================*/
 /*====================================================================================================*/
-#include "nrf_gpio.h"
-
 #include "nrf51_system.h"
 #include "nrf51_delay.h"
 #include "experiment_nrf51.h"
@@ -12,6 +10,13 @@ int main( void )
   GPIO_Config();
 
   while(1) {
+    // Port 0 ( Pin 0-7 ) Blink
+    nrf_gpio_word_byte_write(&(NRF_GPIO->OUT), 0, 0x0F);
+    Delay_100ms(1);
+    nrf_gpio_word_byte_write(&(NRF_GPIO->OUT), 0, 0xF0);
+    Delay_100ms(1);
+
+    // Pin 18, 19 Blink
     nrf_gpio_pin_toggle(18);
     Delay_100ms(1);
     nrf_gpio_pin_toggle(19);
@@ -22,11 +27,8 @@ int main( void )
 /*====================================================================================================*/
 void GPIO_Config( void )
 {
-  nrf_gpio_cfg_output(LED0);
-  nrf_gpio_cfg_output(LED1);
-
-  nrf_gpio_pin_set(LED0);
-  nrf_gpio_pin_set(LED1);
+  nrf_gpio_range_cfg_output( 0,  7);  // Config Pin 00-07
+  nrf_gpio_range_cfg_output(18, 19);  // Config Pin 18-19
 }
 /*====================================================================================================*/
 /*====================================================================================================*/
