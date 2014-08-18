@@ -81,7 +81,7 @@ u8 UART_RecvByte( void )
 /*====================================================================================================*/
 u8 UART_RecvByteWTO( u8 *RecvData, s32 Timeout_ms )
 {
-  u8 State = ERROR;
+  u8 State = SUCCESS;
 
   while(NRF_UART0->EVENTS_RXDRDY != 1) {
     if(Timeout_ms >= 0) {
@@ -89,14 +89,14 @@ u8 UART_RecvByteWTO( u8 *RecvData, s32 Timeout_ms )
       Delay_1ms(1);
     }
     else {
-      State = SUCCESS;
+      State = ERROR;
       break;
     }
   }
 
   if(Timeout_ms > 0) {
     NRF_UART0->EVENTS_RXDRDY = 0;
-    *RecvData = (uint8_t)NRF_UART0->RXD;
+    *RecvData = (u8)NRF_UART0->RXD;
   }
 
   return State;

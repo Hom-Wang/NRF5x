@@ -21,12 +21,14 @@ int main( void )
     nrf_gpio_pin_toggle(18);
     nrf_gpio_pin_toggle(19);
 
-    if(RS232_RecvByteWTO(&RecvData, 1000) != SUCCESS) {
+    if(RS232_RecvByteWTO(&RecvData, 1000) == SUCCESS) {
       if(RecvData == 0x0D)  // if press enter
         RS232_SendStr((u8*)"\r\n");
       else
         RS232_SendByte(RecvData);
     }
+    else
+      RS232_SendStr((u8*)"Timeout!\r\n");
   }
 }
 /*====================================================================================================*/
