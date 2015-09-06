@@ -1,4 +1,4 @@
-; Copyright (c) 2013, Nordic Semiconductor ASA
+; Copyright (c) 2015, Nordic Semiconductor ASA
 ; All rights reserved.
 ; 
 ; Redistribution and use in source and binary forms, with or without
@@ -63,9 +63,9 @@ __heap_limit
                 EXPORT  __Vectors_Size
 
 __Vectors       DCD     __initial_sp              ; Top of Stack
-                DCD     Reset_Handler             ; Reset Handler
-                DCD     NMI_Handler               ; NMI Handler
-                DCD     HardFault_Handler         ; Hard Fault Handler
+                DCD     Reset_Handler
+                DCD     NMI_Handler
+                DCD     HardFault_Handler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
@@ -73,46 +73,45 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
-                DCD     SVC_Handler               ; SVCall Handler
+                DCD     SVC_Handler
                 DCD     0                         ; Reserved
                 DCD     0                         ; Reserved
-                DCD     PendSV_Handler            ; PendSV Handler
-                DCD     SysTick_Handler           ; SysTick Handler
+                DCD     PendSV_Handler
+                DCD     SysTick_Handler
 
                 ; External Interrupts
-                DCD      POWER_CLOCK_IRQHandler ;POWER_CLOCK
-                DCD      RADIO_IRQHandler ;RADIO
-                DCD      UART0_IRQHandler ;UART0
-                DCD      SPI0_TWI0_IRQHandler ;SPI0_TWI0
-                DCD      SPI1_TWI1_IRQHandler ;SPI1_TWI1
-                DCD      0 ;Reserved
-                DCD      GPIOTE_IRQHandler ;GPIOTE
-                DCD      ADC_IRQHandler ;ADC
-                DCD      TIMER0_IRQHandler ;TIMER0
-                DCD      TIMER1_IRQHandler ;TIMER1
-                DCD      TIMER2_IRQHandler ;TIMER2
-                DCD      RTC0_IRQHandler ;RTC0
-                DCD      TEMP_IRQHandler ;TEMP
-                DCD      RNG_IRQHandler ;RNG
-                DCD      ECB_IRQHandler ;ECB
-                DCD      CCM_AAR_IRQHandler ;CCM_AAR
-                DCD      WDT_IRQHandler ;WDT
-                DCD      RTC1_IRQHandler ;RTC1
-                DCD      QDEC_IRQHandler ;QDEC
-                DCD      LPCOMP_IRQHandler ;LPCOMP
-                DCD      SWI0_IRQHandler ;SWI0
-                DCD      SWI1_IRQHandler ;SWI1
-                DCD      SWI2_IRQHandler ;SWI2
-                DCD      SWI3_IRQHandler ;SWI3
-                DCD      SWI4_IRQHandler ;SWI4
-                DCD      SWI5_IRQHandler ;SWI5
-                DCD      0 ;Reserved
-                DCD      0 ;Reserved
-                DCD      0 ;Reserved
-                DCD      0 ;Reserved
-                DCD      0 ;Reserved
-                DCD      0 ;Reserved
-
+                DCD     POWER_CLOCK_IRQHandler
+                DCD     RADIO_IRQHandler
+                DCD     UART0_IRQHandler
+                DCD     SPI0_TWI0_IRQHandler
+                DCD     SPI1_TWI1_IRQHandler
+                DCD     0                         ; Reserved
+                DCD     GPIOTE_IRQHandler
+                DCD     ADC_IRQHandler
+                DCD     TIMER0_IRQHandler
+                DCD     TIMER1_IRQHandler
+                DCD     TIMER2_IRQHandler
+                DCD     RTC0_IRQHandler
+                DCD     TEMP_IRQHandler
+                DCD     RNG_IRQHandler
+                DCD     ECB_IRQHandler
+                DCD     CCM_AAR_IRQHandler
+                DCD     WDT_IRQHandler
+                DCD     RTC1_IRQHandler
+                DCD     QDEC_IRQHandler
+                DCD     LPCOMP_IRQHandler
+                DCD     SWI0_IRQHandler
+                DCD     SWI1_IRQHandler
+                DCD     SWI2_IRQHandler
+                DCD     SWI3_IRQHandler
+                DCD     SWI4_IRQHandler
+                DCD     SWI5_IRQHandler
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
+                DCD     0                         ; Reserved
 
 __Vectors_End
 
@@ -122,9 +121,9 @@ __Vectors_Size  EQU     __Vectors_End - __Vectors
 
 ; Reset Handler
 
-NRF_POWER_RAMON_ADDRESS            EQU   0x40000524  ; NRF_POWER->RAMON address
-NRF_POWER_RAMONB_ADDRESS           EQU   0x40000554  ; NRF_POWER->RAMONB address
-NRF_POWER_RAMONx_RAMxON_ONMODE_Msk EQU   0x3         ; All RAM blocks on in onmode bit mask
+NRF_POWER_RAMON_ADDRESS              EQU   0x40000524  ; NRF_POWER->RAMON address
+NRF_POWER_RAMONB_ADDRESS             EQU   0x40000554  ; NRF_POWER->RAMONB address
+NRF_POWER_RAMONx_RAMxON_ONMODE_Msk   EQU   0x3         ; All RAM blocks on in onmode bit mask
 
 Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]
@@ -225,7 +224,6 @@ SWI2_IRQHandler
 SWI3_IRQHandler
 SWI4_IRQHandler
 SWI5_IRQHandler
-
                 B .
                 ENDP
                 ALIGN
@@ -255,4 +253,3 @@ __user_initial_stackheap
                 ENDIF
 
                 END
-

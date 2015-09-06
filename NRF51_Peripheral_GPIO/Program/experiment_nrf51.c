@@ -1,6 +1,7 @@
 /*====================================================================================================*/
 /*====================================================================================================*/
-#include "nrf51_system.h"
+#include "drivers\nrf51_system.h"
+
 #include "experiment_nrf51.h"
 /*====================================================================================================*/
 /*====================================================================================================*/
@@ -8,42 +9,35 @@ int main( void )
 {
   GPIO_Config();
 
-  nrf_gpio_pin_clear(LED_1);
-  nrf_gpio_pin_set(LED_2);
-  nrf_gpio_pin_set(LED_3);
-  nrf_gpio_pin_set(LED_4);
-  Delay_100ms(10);
-
   while(1) {
-    while(nrf_gpio_pin_read(KEY_1) == 0) {
-      nrf_gpio_pin_toggle(LED_1);
+    LED_3_Set();
+    LED_1_Reset();
+    Delay_10ms(8);
+    while(KEY_1_Read()) {
+      LED_1_Toggle();
       Delay_10ms(8);
     }
-    while(nrf_gpio_pin_read(KEY_2) == 0) {
-      nrf_gpio_pin_toggle(LED_2);
+    LED_1_Set();
+    LED_2_Reset();
+    Delay_10ms(8);
+    while(KEY_2_Read() == 0) {
+      LED_2_Toggle();
       Delay_10ms(8);
     }
-    while(nrf_gpio_pin_read(KEY_3) == 0) {
-      nrf_gpio_pin_toggle(LED_3);
+    LED_2_Set();
+    LED_4_Reset();
+    Delay_10ms(8);
+    while(KEY_4_Read() == 0) {
+      LED_4_Toggle();
       Delay_10ms(8);
     }
-    while(nrf_gpio_pin_read(KEY_4) == 0) {
-      nrf_gpio_pin_toggle(LED_4);
+    LED_4_Set();
+    LED_3_Reset();
+    Delay_10ms(8);
+    while(KEY_3_Read() == 0) {
+      LED_3_Toggle();
       Delay_10ms(8);
     }
-      
-    nrf_gpio_pin_toggle(LED_1);
-    nrf_gpio_pin_toggle(LED_2);
-    Delay_10ms(8);
-    nrf_gpio_pin_toggle(LED_2);
-    nrf_gpio_pin_toggle(LED_4);
-    Delay_10ms(8);
-    nrf_gpio_pin_toggle(LED_4);
-    nrf_gpio_pin_toggle(LED_3);
-    Delay_10ms(8);
-    nrf_gpio_pin_toggle(LED_3);
-    nrf_gpio_pin_toggle(LED_1);
-    Delay_10ms(8);
   }
 }
 /*====================================================================================================*/
