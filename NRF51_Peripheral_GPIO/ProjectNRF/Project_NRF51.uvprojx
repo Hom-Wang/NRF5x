@@ -447,6 +447,11 @@
           <GroupName>Driver</GroupName>
           <Files>
             <File>
+              <FileName>nrf51_clock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Program\drivers\nrf51_clock.c</FilePath>
+            </File>
+            <File>
               <FileName>nrf51_delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Program\drivers\nrf51_delay.c</FilePath>

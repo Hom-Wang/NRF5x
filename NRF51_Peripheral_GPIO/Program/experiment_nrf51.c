@@ -1,41 +1,51 @@
 /*====================================================================================================*/
 /*====================================================================================================*/
 #include "drivers\nrf51_system.h"
+#include "drivers\nrf51_clock.h"
 
 #include "experiment_nrf51.h"
 /*====================================================================================================*/
 /*====================================================================================================*/
+void System_Init( void )
+{
+  CLOCK_SourceXTAL(NRF_CLOCK_XTALFREQ_16MHz);
+  CLOCK_SourceLFCLK(NRF_CLOCK_LF_SRC_RC);
+  CLOCK_CmdHFCLK(ENABLE);
+  CLOCK_CmdLFCLK(ENABLE);
+
+  GPIO_Config();
+}
 int main( void )
 {
-  GPIO_Config();
+  System_Init();
 
   while(1) {
-    LED_3_Set();
-    LED_1_Reset();
+    LED3_Set();
+    LED1_Reset();
     Delay_10ms(8);
-    while(KEY_1_Read()) {
-      LED_1_Toggle();
+    while(KEY1_Read()) {
+      LED1_Toggle();
       Delay_10ms(8);
     }
-    LED_1_Set();
-    LED_2_Reset();
+    LED1_Set();
+    LED2_Reset();
     Delay_10ms(8);
-    while(KEY_2_Read() == 0) {
-      LED_2_Toggle();
+    while(KEY2_Read()) {
+      LED2_Toggle();
       Delay_10ms(8);
     }
-    LED_2_Set();
-    LED_4_Reset();
+    LED2_Set();
+    LED4_Reset();
     Delay_10ms(8);
-    while(KEY_4_Read() == 0) {
-      LED_4_Toggle();
+    while(KEY4_Read()) {
+      LED4_Toggle();
       Delay_10ms(8);
     }
-    LED_4_Set();
-    LED_3_Reset();
+    LED4_Set();
+    LED3_Reset();
     Delay_10ms(8);
-    while(KEY_3_Read() == 0) {
-      LED_3_Toggle();
+    while(KEY3_Read()) {
+      LED3_Toggle();
       Delay_10ms(8);
     }
   }
