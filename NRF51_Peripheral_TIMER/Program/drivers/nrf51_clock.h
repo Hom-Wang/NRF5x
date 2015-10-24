@@ -10,9 +10,10 @@
 #define HFCLK_FREQUENCY   (16000000UL)  // 16MHz
 /*====================================================================================================*/
 /*====================================================================================================*/
-void CLOCK_SourceLFCLK( uint32_t ClockSource );
-void CLOCK_CmdLFCLK( FunctionalState NewState );
-void CLOCK_CmdHFCLK( FunctionalState NewState );
+void CLOCK_SourceXTAL( uint32_t clockSource );
+void CLOCK_SourceLFCLK( uint32_t clockSource );
+void CLOCK_CmdLFCLK( uint8_t state );
+void CLOCK_CmdHFCLK( uint8_t state );
 /*====================================================================================================*/
 /*====================================================================================================*/
 #endif	 

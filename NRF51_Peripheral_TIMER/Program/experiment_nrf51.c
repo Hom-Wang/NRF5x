@@ -1,55 +1,65 @@
 /*====================================================================================================*/
 /*====================================================================================================*/
 #include "drivers\nrf51_system.h"
+#include "drivers\nrf51_clock.h"
 #include "drivers\nrf51_timer.h"
 
 #include "experiment_nrf51.h"
 /*====================================================================================================*/
 /*====================================================================================================*/
-#define DELAY_TIME 80
+#define DELAY_TIME  80
 
-#define TIMER     NRF_TIMER0
-#define TIMER_CH  TIMER_CH0
+#define TIMERx      NRF_TIMER0
+#define TIMERx_CH   TIMER_CH0
 
-void TIMER_DelayMS( __IO uint32_t DelayMs )
+void TIMER_DelayMS( __IO uint32_t delayMs )
 {
   TIMER_TimeBaseInitTypeDef TIMER_TBInitStruct;
 
-  TIMER_TBInitStruct.TIMER_Mode      = TIMER_MODE_MODE_Timer;
-  TIMER_TBInitStruct.TIMER_BitMode   = TIMER_BITMODE_BITMODE_16Bit;
-  TIMER_TBInitStruct.TIMER_Prescaler = 9;  // 16Mhz / 2^9 = 16000000Hz / 512 = 31250 Hz
-  TIMER_TimeBaseInit(TIMER, &TIMER_TBInitStruct);
+  TIMER_TBInitStruct.TIMER_Mode      = NRF_TIMER_MODE_TIMER;
+  TIMER_TBInitStruct.TIMER_BitMode   = NRF_TIMER_BIT_WIDTH_16;
+  TIMER_TBInitStruct.TIMER_Prescaler = NRF_TIMER_FREQ_31250Hz;
+  TIMER_TimeBaseInit(TIMERx, &TIMER_TBInitStruct);
 
-  TIMER_CCInit(TIMER, TIMER_CH, DelayMs*31.25f);
+  TIMER_CCInit(TIMERx, TIMERx_CH, delayMs * 31.25f);
 
-  TIMER_Cmd(TIMER, ENABLE);
-  while(TIMER_EvenCheck(TIMER, TIMER_CH) != SUCCESS);
+  TIMER_Cmd(TIMERx, ENABLE);
+  while(TIMER_EvenCheck(TIMERx, TIMERx_CH) != SUCCESS);
   TIMER_EvenClear(NRF_TIMER0, TIMER_CH0);
-  TIMER_Cmd(TIMER, DISABLE);
+  TIMER_Cmd(TIMERx, DISABLE);
 }
 /*====================================================================================================*/
 /*====================================================================================================*/
-int main( void )
+void System_Init( void )
 {
+  CLOCK_SourceXTAL(NRF_CLOCK_XTALFREQ_16MHz);
+  CLOCK_SourceLFCLK(NRF_CLOCK_LF_SRC_RC);
+  CLOCK_CmdHFCLK(ENABLE);
+  CLOCK_CmdLFCLK(ENABLE);
+
   GPIO_Config();
 
-  LED_1_Set();
-  LED_2_Reset();
-  LED_3_Reset();
-  LED_4_Reset();
+  LED1_Set();
+  LED2_Reset();
+  LED3_Reset();
+  LED4_Reset();
+}
+int main( void )
+{
+  System_Init();
 
   while(1) {
-    LED_1_Toggle();
-    LED_2_Toggle();
+    LED1_Toggle();
+    LED2_Toggle();
     TIMER_DelayMS(DELAY_TIME);
-    LED_2_Toggle();
-    LED_4_Toggle();
+    LED2_Toggle();
+    LED4_Toggle();
     TIMER_DelayMS(DELAY_TIME);
-    LED_4_Toggle();
-    LED_3_Toggle();
+    LED4_Toggle();
+    LED3_Toggle();
     TIMER_DelayMS(DELAY_TIME);
-    LED_3_Toggle();
-    LED_1_Toggle();
+    LED3_Toggle();
+    LED1_Toggle();
     TIMER_DelayMS(DELAY_TIME);
   }
 }
