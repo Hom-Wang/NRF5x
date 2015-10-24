@@ -1,35 +1,46 @@
 /*====================================================================================================*/
 /*====================================================================================================*/
 #include "drivers\nrf51_system.h"
+#include "drivers\nrf51_clock.h"
 #include "drivers\nrf51_temp.h"
-#include "modules\module_rs232.h"
+#include "modules\module_serial.h"
 
 #include "experiment_nrf51.h"
 /*====================================================================================================*/
 /*====================================================================================================*/
-int main( void )
+void System_Init( void )
 {
-  int32_t Temp = 0;
+  CLOCK_SourceXTAL(NRF_CLOCK_XTALFREQ_16MHz);
+  CLOCK_SourceLFCLK(NRF_CLOCK_LF_SRC_RC);
+  CLOCK_CmdHFCLK(ENABLE);
+  CLOCK_CmdLFCLK(ENABLE);
 
   GPIO_Config();
   TEMP_Config();
-  RS232_Config();
+  Serial_Config();
 
   Delay_1ms(1);
 
-  RS232_SendStr("\r\nHello World!\r\n\r\n");
+  Serial_SendStr("\r\nHello World!\r\n\r\n");
+}
+int main( void )
+{
+  float temp = 0.0f;
+
+  System_Init();
 
   while(1) {
-    LED_1_Toggle();
-    LED_2_Toggle();
-    LED_3_Toggle();
-    LED_4_Toggle();
+    LED1_Toggle();
+    LED2_Toggle();
+    LED3_Toggle();
+    LED4_Toggle();
     Delay_100ms(5);
 
-    RS232_SendStr("Chip Temp : ");
-    Temp = (TEMP_GetTemp()*25);
-    RS232_SendNum(Type_D, 5, Temp);
-    RS232_SendStr(" deg\r\n");
+    NRF_TEMP->TASKS_START = 1;
+    while(NRF_TEMP->EVENTS_DATARDY == 0);
+    NRF_TEMP->EVENTS_DATARDY = 0;
+    temp = (TEMP_GetTemp() / 4.0f);
+    printf("chip temperature : %.2f degC\r\n", temp);
   }
 }
 /*====================================================================================================*/
