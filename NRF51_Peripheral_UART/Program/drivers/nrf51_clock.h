@@ -1,23 +1,19 @@
-/* #include "algorithm_string.h" */
+/* #include "nrf51_clock.h" */
 
-#ifndef __ALGORITHM_STRING_H
-#define __ALGORITHM_STRING_H
+#ifndef __NRF51_CLOCK_H
+#define __NRF51_CLOCK_H
 
-#include "drivers\nrf51_system.h"
+#include "nrf51_system.h"
 /*====================================================================================================*/
 /*====================================================================================================*/
-typedef enum {
-  Type_B = 2,   // 無號數二進制
-  Type_O = 8,   // 無號數八進制
-  Type_D = 10,  // 無號數十進制
-  Type_H = 16,  // 無號數十六進制
-  Type_I = 0,   // 有號數
-  Type_F = 1,   // 浮點數
-} StringType;
+#define LFCLK_FREQUENCY   (32768UL)     // 32.768kHz
+#define HFCLK_FREQUENCY   (16000000UL)  // 16MHz
 /*====================================================================================================*/
 /*====================================================================================================*/
-void     num2Str( StringType type, uint8_t lens, char *pStr, int32_t number );
-uint16_t lenOfStr( char *pStr );
+void CLOCK_SourceXTAL( uint32_t clockSource );
+void CLOCK_SourceLFCLK( uint32_t clockSource );
+void CLOCK_CmdLFCLK( uint8_t state );
+void CLOCK_CmdHFCLK( uint8_t state );
 /*====================================================================================================*/
 /*====================================================================================================*/
-#endif
+#endif	 
