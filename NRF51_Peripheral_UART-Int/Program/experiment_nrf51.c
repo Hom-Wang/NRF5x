@@ -1,25 +1,35 @@
 /*====================================================================================================*/
 /*====================================================================================================*/
 #include "drivers\nrf51_system.h"
-#include "modules\module_rs232.h"
+#include "drivers\nrf51_clock.h"
+#include "modules\module_serial.h"
 
 #include "experiment_nrf51.h"
 /*====================================================================================================*/
 /*====================================================================================================*/
-int main( void )
+void System_Init( void )
 {
+  CLOCK_SourceXTAL(NRF_CLOCK_XTALFREQ_16MHz);
+  CLOCK_SourceLFCLK(NRF_CLOCK_LF_SRC_RC);
+  CLOCK_CmdHFCLK(ENABLE);
+  CLOCK_CmdLFCLK(ENABLE);
+
   GPIO_Config();
-  RS232_Config();
+  Serial_Config();
 
   Delay_1ms(1);
 
-  RS232_SendStr("\r\nHello World!\r\n\r\n");
+  Serial_SendStr("\r\nHello World!\r\n\r\n");
+}
+int main( void )
+{
+  System_Init();
 
   while(1) {
-    LED_1_Toggle();
-    LED_2_Toggle();
-    LED_3_Toggle();
-    LED_4_Toggle();
+    LED1_Toggle();
+    LED2_Toggle();
+    LED3_Toggle();
+    LED4_Toggle();
     Delay_100ms(5);
   }
 }

@@ -7,17 +7,17 @@
 /*====================================================================================================*/
 /*====================================================================================================*/
 typedef struct {
-  uint8_t  UART_PinTXD;
-  uint8_t  UART_PinRXD;
-  uint8_t  UART_PinRTS;
-  uint8_t  UART_PinCTS;
-  uint32_t UART_Parity;
+  uint8_t  PinTXD;
+  uint8_t  PinRXD;
+  uint8_t  PinRTS;
+  uint8_t  PinCTS;
+  uint32_t Parity;
   // UART_CONFIG_PARITY_Excluded - Parity bit excluded.
   // UART_CONFIG_PARITY_Included - Parity bit included.
-  uint32_t UART_HardwareFlowControl;
+  uint32_t HardwareFlowControl;
   // UART_CONFIG_HWFC_Disabled - Hardware flow control disabled.
   // UART_CONFIG_HWFC_Enabled  - Hardware flow control enabled.
-  uint32_t UART_BaudRate;
+  uint32_t BaudRate;
   // UART_BAUDRATE_BAUDRATE_Baud1200   -   1200 baud.
   // UART_BAUDRATE_BAUDRATE_Baud2400   -   2400 baud.
   // UART_BAUDRATE_BAUDRATE_Baud4800   -   4800 baud.
@@ -38,14 +38,13 @@ typedef struct {
 /*====================================================================================================*/
 /*====================================================================================================*/
 void    UART_Init( NRF_UART_Type *UARTx, UART_InitTypeDef *UART_InitStruct );
-void    UART_InterruptCmd( NRF_UART_Type *UARTx, FunctionalState NewState );
-
-void    UART_SendByte( NRF_UART_Type *UARTx, uint8_t *SendByte );
-void    UART_RecvByte( NRF_UART_Type *UARTx, uint8_t *RecvData );
-int8_t  UART_RecvByteWTO( NRF_UART_Type *UARTx, uint8_t *RecvData, int32_t Timeout_ms );
-void    UART_SendData( NRF_UART_Type *UARTx, uint8_t *SendData, uint16_t DataLen );
-void    UART_RecvData( NRF_UART_Type *UARTx, uint8_t *RecvData, uint16_t DataLen );
-uint8_t UART_RecvDataWTO( NRF_UART_Type *UARTx, uint8_t *RecvData, uint16_t DataLen, int32_t Timeout_ms );
+void    UART_InterruptCmd( NRF_UART_Type *UARTx, uint8_t state );
+void    UART_SendByte( NRF_UART_Type *UARTx, uint8_t *sendByte );
+void    UART_RecvByte( NRF_UART_Type *UARTx, uint8_t *recvData );
+int8_t  UART_RecvByteWTO( NRF_UART_Type *UARTx, uint8_t *recvData, int32_t timeoutMs );
+void    UART_SendData( NRF_UART_Type *UARTx, uint8_t *sendData, uint16_t lens );
+void    UART_RecvData( NRF_UART_Type *UARTx, uint8_t *recvData, uint16_t lens );
+int8_t  UART_RecvDataWTO( NRF_UART_Type *UARTx, uint8_t *recvData, uint16_t lens, int32_t timeoutMs );
 /*====================================================================================================*/
 /*====================================================================================================*/
 #endif

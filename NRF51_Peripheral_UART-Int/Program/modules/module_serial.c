@@ -1,10 +1,9 @@
 /*====================================================================================================*/
 /*====================================================================================================*/
-#include <stdio.h>
-
 #include "drivers\nrf51_system.h"
 #include "drivers\nrf51_uart.h"
-#include "module_rs232.h"
+
+#include "module_serial.h"
 /*====================================================================================================*/
 /*====================================================================================================*/
 #define UARTx               NRF_UART0
@@ -18,22 +17,22 @@
 #define UARTx_HARDWARECTRL  UART_CONFIG_HWFC_Disabled
 /*====================================================================================================*/
 /*====================================================================================================*
-**函數 : RS232_Config
-**功能 : RS232 配置
+**函數 : Serial_Config
+**功能 : Serial Config
 **輸入 : None
 **輸出 : None
-**使用 : RS232_Config();
+**使用 : Serial_Config();
 **====================================================================================================*/
 /*====================================================================================================*/
-void RS232_Config( void )
+void Serial_Config( void )
 {
   UART_InitTypeDef UART_InitStruct;
 
-  UART_InitStruct.UART_PinTXD              = UARTx_TXD_PIN;
-  UART_InitStruct.UART_PinRXD              = UARTx_RXD_PIN;
-  UART_InitStruct.UART_BaudRate            = UARTx_BAUDRATE;
-  UART_InitStruct.UART_Parity              = UARTx_PARITY;
-  UART_InitStruct.UART_HardwareFlowControl = UARTx_HARDWARECTRL;
+  UART_InitStruct.PinTXD              = UARTx_TXD_PIN;
+  UART_InitStruct.PinRXD              = UARTx_RXD_PIN;
+  UART_InitStruct.BaudRate            = UARTx_BAUDRATE;
+  UART_InitStruct.Parity              = UARTx_PARITY;
+  UART_InitStruct.HardwareFlowControl = UARTx_HARDWARECTRL;
   UART_Init(UARTx, &UART_InitStruct);
 
   UART_InterruptCmd(UARTx, ENABLE);
@@ -42,40 +41,40 @@ void RS232_Config( void )
 }
 /*====================================================================================================*/
 /*====================================================================================================*
-**函數 : RS232_SendByte
-**功能 : 發送 1Byte 資料
-**輸入 : SendByte
+**函數 : Serial_SendByte
+**功能 : Send Byte
+**輸入 : sendByte
 **輸出 : None
-**使用 : RS232_SendByte('A');
+**使用 : Serial_SendByte('A');
 **====================================================================================================*/
 /*====================================================================================================*/
-void RS232_SendByte( uint8_t SendByte )
+void Serial_SendByte( uint8_t sendByte )
 {
-  UART_SendByte(UARTx, &SendByte);
+  UART_SendByte(UARTx, &sendByte);
 }
 /*====================================================================================================*/
 /*====================================================================================================*
-**函數 : RS232_SendData
-**功能 : 發送資料
-**輸入 : *SendData, DataLen
+**函數 : Serial_SendData
+**功能 : Send Data
+**輸入 : *sendData, lens
 **輸出 : None
-**使用 : RS232_SendData(SendData, DataLen);
+**使用 : Serial_SendData(sendData, lens);
 **====================================================================================================*/
 /*====================================================================================================*/
-void RS232_SendData( uint8_t *SendData, uint16_t DataLen )
+void Serial_SendData( uint8_t *sendData, uint16_t lens )
 {
-  UART_SendData(UARTx, SendData, DataLen);
+  UART_SendData(UARTx, sendData, lens);
 }
 /*====================================================================================================*/
 /*====================================================================================================*
-**函數 : RS232_SendStr
-**功能 : 發送字串
+**函數 : Serial_SendStr
+**功能 : Send String
 **輸入 : *pWord
 **輸出 : None
-**使用 : RS232_SendStr("Hellow World!");
+**使用 : Serial_SendStr("Hellow World!");
 **====================================================================================================*/
 /*====================================================================================================*/
-void RS232_SendStr( char *pWord )
+void Serial_SendStr( char *pWord )
 {
   while(*pWord != '\0') {
     UART_SendByte(UARTx, (uint8_t*)pWord++);
@@ -83,19 +82,19 @@ void RS232_SendStr( char *pWord )
 }
 /*====================================================================================================*/
 /*====================================================================================================*
-**函數 : RS232_SendNum
-**功能 : 將數值轉字串發送
-**輸入 : Type, NumLen, SendData
+**函數 : Serial_SendNum
+**功能 : Send Number
+**輸入 : type, lens, sendNum
 **輸出 : None
-**使用 : RS232_SendNum(Type_D, 6, 1024);
+**使用 : Serial_SendNum(Type_D, 6, 1024);
 **====================================================================================================*/
 /*====================================================================================================*/
-void RS232_SendNum( StrType Type, uint8_t NumLen, int32_t SendData )
+void Serial_SendNum( StringType type, uint8_t lens, int32_t sendNum )
 {
-  char TrData[32] = {0};
-  char *pWord = TrData;
+  char tmpStr[32] = {0};
+  char *pWord = tmpStr;
 
-  Str_NumToChar(Type, NumLen, TrData, SendData);
+  num2Str(type, lens, tmpStr, sendNum);
 
   while(*pWord != '\0') {
     UART_SendByte(UARTx, (uint8_t*)pWord++);
@@ -103,55 +102,55 @@ void RS232_SendNum( StrType Type, uint8_t NumLen, int32_t SendData )
 }
 /*====================================================================================================*/
 /*====================================================================================================*
-**函數 : RS232_RecvByte
-**功能 : 接收 1Byte 資料
-**輸入 : *RecvData
+**函數 : Serial_RecvByte
+**功能 : Recv Byte
+**輸入 : *recvByte
 **輸出 : None
-**使用 : RecvByte = RS232_RecvByte();
+**使用 : recvByte = Serial_RecvByte();
 **====================================================================================================*/
 /*====================================================================================================*/
-int8_t RS232_RecvByte( void )
+uint8_t Serial_RecvByte( void )
 {
-  uint8_t RecvByte = 0;
-  UART_RecvByte(UARTx, &RecvByte);
-  return RecvByte;
+  uint8_t recvByte = 0;
+  UART_RecvByte(UARTx, &recvByte);
+  return recvByte;
 }
 /*====================================================================================================*/
 /*====================================================================================================*
-**函數 : RS232_RecvData
-**功能 : 接收資料
-**輸入 : *RecvData, DataLen
+**函數 : Serial_RecvData
+**功能 : Recv Data
+**輸入 : *recvData, lens
 **輸出 : None
-**使用 : RS232_RecvData(RecvData, DataLen);
+**使用 : Serial_RecvData(recvData, lens);
 **====================================================================================================*/
 /*====================================================================================================*/
-void RS232_RecvData( uint8_t *RecvData, uint16_t DataLen )
+void Serial_RecvData( uint8_t *recvData, uint16_t lens )
 {
-  UART_RecvData(UARTx, RecvData, DataLen);
+  UART_RecvData(UARTx, recvData, lens);
 }
 /*====================================================================================================*/
 /*====================================================================================================*
-**函數 : RS232_RecvDataWTO
-**功能 : 接收資料
-**輸入 : *RecvData, DataLen, Timeout_ms
-**輸出 : State
-**使用 : State = RS232_RecvDataWTO(RecvData, DataLen, Timeout_ms);
+**函數 : Serial_RecvDataWTO
+**功能 : Recv Data Wait Timeout
+**輸入 : *recvData, lens, timeoutMs
+**輸出 : state
+**使用 : state = Serial_RecvDataWTO(recvData, lens, timeoutMs);
 **====================================================================================================*/
 /*====================================================================================================*/
-int8_t RS232_RecvDataWTO( uint8_t *RecvData, uint16_t DataLen, int32_t Timeout_ms )
+int8_t Serial_RecvDataWTO( uint8_t *recvData, uint16_t lens, int32_t timeoutMs )
 {
-  return UART_RecvDataWTO(UARTx, RecvData, DataLen, Timeout_ms);
+  return UART_RecvDataWTO(UARTx, recvData, lens, timeoutMs);
 }
 /*====================================================================================================*/
 /*====================================================================================================*
-**函數 : RS232_RecvStr
-**功能 : 接收字串
+**函數 : Serial_RecvStr
+**功能 : Recv String
 **輸入 : *pWord
 **輸出 : None
-**使用 : RS232_RecvStr(RecvStirng);
+**使用 : Serial_RecvStr(recvStr);
 **====================================================================================================*/
 /*====================================================================================================*/
-void RS232_RecvStr( char *pWord )
+void Serial_RecvStr( char *pWord )
 {
   do {
     UART_RecvByte(UARTx, (uint8_t*)pWord++);
@@ -160,20 +159,20 @@ void RS232_RecvStr( char *pWord )
 }
 /*====================================================================================================*/
 /*====================================================================================================*
-**函數 : RS232_RecvStrWTO
-**功能 : 接收字串, 並加入 Timeout 功能
-**輸入 : *pWord, TimeoutMs
+**函數 : Serial_RecvStrWTO
+**功能 : Recv String Wait Timeout
+**輸入 : *pWord, timeoutMs
 **輸出 : State
-**使用 : RS232_RecvStrWTO(RecvStirng, 200);
+**使用 : Serial_RecvStrWTO(RecvStr, 200);
 **====================================================================================================*/
 /*====================================================================================================*/
-int8_t RS232_RecvStrWTO( char *pWord, int32_t TimeoutMs )
+int8_t Serial_RecvStrWTO( char *pWord, int32_t timeoutMs )
 {
-  int8_t State = ERROR;
+  int8_t state = ERROR;
 
   do {
-    State = UART_RecvByteWTO(UARTx, (uint8_t*)pWord++, TimeoutMs);
-    if(State == ERROR)
+    state = UART_RecvByteWTO(UARTx, (uint8_t*)pWord++, timeoutMs);
+    if(state == ERROR)
       return ERROR;
   } while(*(pWord-1) != '\0');
   *pWord = '\0';

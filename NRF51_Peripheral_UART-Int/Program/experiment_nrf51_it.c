@@ -1,7 +1,7 @@
 /*====================================================================================================*/
 /*====================================================================================================*/
 #include "drivers\nrf51_system.h"
-#include "modules\module_rs232.h"
+#include "modules\module_serial.h"
 
 #include "experiment_nrf51.h"
 /*====================================================================================================*/
@@ -17,12 +17,12 @@ void PendSV_Handler( void ) { while(1); }
 //void RADIO_IRQHandler( void );
 void UART0_IRQHandler( void )
 {
-  uint8_t RecvData = RS232_RecvByte();
+  uint8_t recvData = Serial_RecvByte();
 
-  if(RecvData == 0x0D)
-    RS232_SendStr("\r\n");
+  if(recvData == 0x0D)
+    Serial_SendStr("\r\n");
   else
-    RS232_SendByte(RecvData);
+    Serial_SendByte(recvData);
 }
 //void SPI0_TWI0_IRQHandler( void );
 //void SPI1_TWI1_IRQHandler( void );
