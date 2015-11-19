@@ -8,12 +8,13 @@
   <WorkspaceName>WorkSpace</WorkspaceName>
 
   <project>
-    <PathAndName>.\NRF51_S110_BeaconAdv\ProjectNRF\nRF51_BeaconAdv.uvprojx</PathAndName>
+    <PathAndName>.\NRF51_BLE_S110_beaconAdv\ProjectNRF\nRF51_beaconAdv.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
-    <PathAndName>.\NRF51_S120_BeaconScan\ProjectNRF\nRF51_BeaconScan.uvprojx</PathAndName>
+    <PathAndName>.\NRF51_BLE_S120_beaconScan\ProjectNRF\nRF51_beaconScan.uvprojx</PathAndName>
   </project>
 
 </ProjectWorkspace>
