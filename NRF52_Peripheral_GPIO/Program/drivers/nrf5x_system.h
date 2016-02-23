@@ -1,11 +1,16 @@
-/* #include "nrf52_system.h" */
+/* #include "nrf5x_system.h" */
 
-#ifndef __NRF52_SYSTEM_H
-#define __NRF52_SYSTEM_H
+#ifndef __NRF5x_SYSTEM_H
+#define __NRF5x_SYSTEM_H
 
+#ifdef NRF51
+#include "nrf51.h"
+#elif defined NRF52
 #include "nrf52.h"
-#include "nrf52_delay.h"
-#include "nrf52_conf.h"
+#endif
+
+#include "nrf5x_delay.h"
+#include "nrf5x_conf.h"
 /*====================================================================================================*/
 /*====================================================================================================*/
 #define __GPIO_SET(_PIN)  nrf_gpio_pin_set(_PIN)

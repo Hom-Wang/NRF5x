@@ -1,9 +1,9 @@
-/* #include "nrf52_delay.h" */
+/* #include "nrf5x_delay.h" */
 
-#ifndef __NRF52_DELAY_H
-#define __NRF52_DELAY_H
+#ifndef __NRF5x_DELAY_H
+#define __NRF5x_DELAY_H
 
-#include "nrf52_system.h"
+#include "nrf5x_system.h"
 /*====================================================================================================*/
 /*====================================================================================================*/
 void delay_us( __IO uint32_t vCnt_us );
